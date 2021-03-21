@@ -1,17 +1,7 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/hashicorp/vault/shamir"
-)
+import "incipher.io/shamir/cmd"
 
 func main() {
-	shards, err := shamir.Split([]byte("hello"), 3, 2)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println(shards)
+	cmd.Execute()
 }
