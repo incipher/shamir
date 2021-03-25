@@ -8,9 +8,10 @@ import (
 func Execute() {
 	// Define root command
 	rootCommand := &cobra.Command{
-		Use:   "shamir",
-		Short: "Split and combine secrets using Shamir's Secret Sharing algorithm.",
-		Long:  "Split and combine secrets using Shamir's Secret Sharing algorithm.",
+		Use:     "shamir",
+		Short:   "Split and combine secrets using Shamir's Secret Sharing algorithm.",
+		Long:    "Split and combine secrets using Shamir's Secret Sharing algorithm.",
+		Version: "0.1.0",
 	}
 
 	// Define commands
