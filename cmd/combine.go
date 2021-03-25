@@ -24,6 +24,7 @@ func generateCombineCommand() *cobra.Command {
 		Run:   runCombineCommand(&thresholdCount),
 	}
 
+	// Define command flags
 	combineCommand.Flags().IntVarP(
 		&thresholdCount,
 		"threshold",
