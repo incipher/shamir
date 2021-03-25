@@ -27,6 +27,8 @@ SayHelloToMyLittleFriend
 
 ## Installation
 
+[Pre-built binaries](https://github.com/incipher/shamir/releases)
+
 ## License
 
 <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero v1.0 Universal</a>
