@@ -1,7 +1,7 @@
 package shamir
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/hashicorp/vault/shamir"
 	"incipher.io/shamir/utils"
@@ -17,19 +17,19 @@ func Split(
 ) ([]string, error) {
 	// Validate inputs
 	if len(secret) == 0 {
-		return nil, errors.New("secret cannot be empty")
+		return nil, fmt.Errorf("secret cannot be empty")
 	}
 
 	if thresholdCount > sharesCount {
-		return nil, errors.New("threshold must be less than or equal shares")
+		return nil, fmt.Errorf("threshold must be less than or equal shares")
 	}
 
 	if sharesCount < 2 || sharesCount > 255 {
-		return nil, errors.New("shares must be strictly between 2 and 255")
+		return nil, fmt.Errorf("shares must be strictly between 2 and 255")
 	}
 
 	if thresholdCount < 2 || thresholdCount > 255 {
-		return nil, errors.New("threshold must be strictly between 2 and 255")
+		return nil, fmt.Errorf("threshold must be strictly between 2 and 255")
 	}
 
 	// Split secret into shares

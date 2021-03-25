@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/manifoldco/promptui"
@@ -56,7 +55,7 @@ func runSplitCommand(cmd *cobra.Command, args []string) {
 		Mask:  '*',
 		Validate: func(input string) error {
 			if len(input) == 0 {
-				return errors.New("secret cannot be empty")
+				return fmt.Errorf("secret cannot be empty")
 			}
 
 			return nil
