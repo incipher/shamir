@@ -10,12 +10,12 @@ import (
 	"incipher.io/shamir/utils"
 )
 
-// Declare command flag values
-var sharesCount int
-var thresholdCount int
-
 // Generates the split command
 func generateSplitCommand() *cobra.Command {
+	// Declare command flag values
+	var sharesCount int
+	var thresholdCount int
+
 	// Define command
 	splitCommand := &cobra.Command{
 		Use:   "split",
@@ -24,18 +24,20 @@ func generateSplitCommand() *cobra.Command {
 thereof (of length t) is necessary to reconstruct the 
 original secret.`,
 		Args: cobra.NoArgs,
-		Run:  runSplitCommand,
+		Run:  runSplitCommand(&sharesCount, &thresholdCount),
 	}
 
 	// Define command flags
-	splitCommand.Flags().IntVarP(&sharesCount,
+	splitCommand.Flags().IntVarP(
+		&sharesCount,
 		"shares",
 		"n",
 		0,
 		"number of shares to be generated",
 	)
 
-	splitCommand.Flags().IntVarP(&thresholdCount,
+	splitCommand.Flags().IntVarP(
+		&thresholdCount,
 		"threshold",
 		"t",
 		0,
@@ -48,36 +50,46 @@ original secret.`,
 	return splitCommand
 }
 
-func runSplitCommand(cmd *cobra.Command, args []string) {
-	// Define secret prompt
-	prompt := promptui.Prompt{
-		Label: "Secret",
-		Mask:  '*',
-		Validate: func(input string) error {
-			if len(input) == 0 {
-				return fmt.Errorf("secret cannot be empty")
-			}
+// Runs the split command
+func runSplitCommand(
+	sharesCount *int,
+	thresholdCount *int,
+) func(cmd *cobra.Command, args []string) {
+	return func(cmd *cobra.Command, args []string) {
+		// Define secret prompt
+		prompt := promptui.Prompt{
+			Label: "Secret",
+			Mask:  '*',
+			Validate: func(input string) error {
+				if len(input) == 0 {
+					return fmt.Errorf("secret cannot be empty")
+				}
 
-			return nil
-		},
-	}
+				return nil
+			},
+		}
 
-	// Prompt user for secret
-	secret, err := prompt.Run()
+		// Prompt user for secret
+		secret, err := prompt.Run()
 
-	if err != nil {
-		utils.ExitWithError(err.Error())
-	}
+		if err != nil {
+			utils.ExitWithError(err.Error())
+		}
 
-	// Split secret into shares
-	shares, err := shamir.Split(secret, sharesCount, thresholdCount)
+		// Split secret into shares
+		shares, err := shamir.Split(
+			secret,
+			*sharesCount,
+			*thresholdCount,
+		)
 
-	if err != nil {
-		utils.ExitWithError(err.Error())
-	}
+		if err != nil {
+			utils.ExitWithError(err.Error())
+		}
 
-	// Print shares
-	for _, share := range shares {
-		fmt.Println(share)
+		// Print shares
+		for _, share := range shares {
+			fmt.Println(share)
+		}
 	}
 }
