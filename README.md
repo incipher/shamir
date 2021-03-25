@@ -31,7 +31,9 @@ SayHelloToMyLittleFriend
 
 ## Installation
 
-[Pre-built binaries](https://github.com/incipher/shamir/releases)
+| Platform     | Package manager                               | Command                              |
+| ------------ | --------------------------------------------- | ------------------------------------ |
+| macOS, Linux | [Homebrew](https://docs.brew.sh/Installation) | `❯ brew install incipher/tap/shamir` |
 
 ## License
 
