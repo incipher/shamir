@@ -15,6 +15,7 @@ func Execute() {
 
 	// Define commands
 	rootCommand.AddCommand(generateSplitCommand())
+	rootCommand.AddCommand(generateCombineCommand())
 
 	// Run CLI
 	cobra.CheckErr(rootCommand.Execute())
