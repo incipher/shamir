@@ -62,7 +62,7 @@ func runSplitCommand(
 			Mask:  '*',
 			Validate: func(input string) error {
 				if len(input) == 0 {
-					return fmt.Errorf("secret cannot be empty")
+					return fmt.Errorf("secret must not be empty")
 				}
 
 				return nil

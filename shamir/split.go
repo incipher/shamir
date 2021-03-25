@@ -17,7 +17,7 @@ func Split(
 ) ([]string, error) {
 	// Validate inputs
 	if len(secret) == 0 {
-		return nil, fmt.Errorf("secret cannot be empty")
+		return nil, fmt.Errorf("secret must not be empty")
 	}
 
 	if thresholdCount > sharesCount {
