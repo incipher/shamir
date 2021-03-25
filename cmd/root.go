@@ -15,7 +15,7 @@ func Execute() {
 		Use:     "shamir",
 		Short:   "Split and combine secrets using Shamir's Secret Sharing algorithm.",
 		Long:    "Split and combine secrets using Shamir's Secret Sharing algorithm.",
-		Version: "0.1.0",
+		Version: "0.1.1",
 		Example: strings.Join(examples, "\n"),
 	}
 
