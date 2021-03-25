@@ -25,11 +25,11 @@ func Split(
 	}
 
 	if sharesCount < 2 || sharesCount > 255 {
-		return nil, fmt.Errorf("shares must be strictly between 2 and 255")
+		return nil, fmt.Errorf("shares must be between 2 and 255")
 	}
 
 	if thresholdCount < 2 || thresholdCount > 255 {
-		return nil, fmt.Errorf("threshold must be strictly between 2 and 255")
+		return nil, fmt.Errorf("threshold must be between 2 and 255")
 	}
 
 	// Split secret into shares
