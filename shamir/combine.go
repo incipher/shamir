@@ -39,7 +39,7 @@ func Combine(sharesHex []string) (string, error) {
 		}
 	}
 
-	// Reconstruct a secret from shares
+	// Reconstruct secret from shares
 	secretBytes, err := shamir.Combine(sharesBytes)
 
 	if err != nil {

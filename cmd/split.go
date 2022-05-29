@@ -10,7 +10,7 @@ import (
 	"incipher.io/shamir/utils"
 )
 
-// Generates the split command
+// Generates the split command.
 func generateSplitCommand() *cobra.Command {
 	// Declare command flag values
 	var sharesCount int
@@ -50,7 +50,7 @@ original secret.`,
 	return splitCommand
 }
 
-// Runs the split command
+// Runs the split command.
 func runSplitCommand(
 	sharesCount *int,
 	thresholdCount *int,

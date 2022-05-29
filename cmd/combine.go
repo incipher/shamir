@@ -10,7 +10,7 @@ import (
 	"incipher.io/shamir/utils"
 )
 
-// Generates the combine command
+// Generates the combine command.
 func generateCombineCommand() *cobra.Command {
 	// Declare command flag values
 	var thresholdCount int
@@ -38,7 +38,7 @@ func generateCombineCommand() *cobra.Command {
 	return combineCommand
 }
 
-// Runs the combine command
+// Runs the combine command.
 func runCombineCommand(
 	thresholdCount *int,
 ) func(cmd *cobra.Command, args []string) {
@@ -80,7 +80,7 @@ func runCombineCommand(
 			shares[i] = share
 		}
 
-		// Reconstruct secret from share
+		// Reconstruct secret from shares
 		secret, err := shamir.Combine(shares)
 
 		if err != nil {

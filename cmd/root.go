@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Defines and runs the CLI
+// Defines and runs the CLI.
 func Execute() {
 	examples := []string{"  $ shamir split -n 3 -t 2", "  $ shamir combine -t 2"}
 
