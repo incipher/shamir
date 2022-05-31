@@ -72,7 +72,6 @@ func runCombineCommand(
 			}
 
 			share, err := prompt.Run()
-
 			if err != nil {
 				utils.ExitWithError(err.Error())
 			}
@@ -82,7 +81,6 @@ func runCombineCommand(
 
 		// Reconstruct secret from shares
 		secret, err := shamir.Combine(shares)
-
 		if err != nil {
 			utils.ExitWithError(err.Error())
 		}

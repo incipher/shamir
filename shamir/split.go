@@ -38,7 +38,6 @@ func Split(
 		sharesCount,
 		thresholdCount,
 	)
-
 	if err != nil {
 		return nil, err
 	}

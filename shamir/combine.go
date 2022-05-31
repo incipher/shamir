@@ -14,7 +14,6 @@ func Combine(sharesHex []string) (string, error) {
 
 	for i := range sharesHex {
 		shareBytes, err := utils.HexToByteArray(sharesHex[i])
-
 		if err != nil {
 			return "", err
 		}
@@ -41,7 +40,6 @@ func Combine(sharesHex []string) (string, error) {
 
 	// Reconstruct secret from shares
 	secretBytes, err := shamir.Combine(sharesBytes)
-
 	if err != nil {
 		return "", err
 	}

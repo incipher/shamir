@@ -71,7 +71,6 @@ func runSplitCommand(
 
 		// Prompt user for secret
 		secret, err := prompt.Run()
-
 		if err != nil {
 			utils.ExitWithError(err.Error())
 		}
@@ -82,7 +81,6 @@ func runSplitCommand(
 			*sharesCount,
 			*thresholdCount,
 		)
-
 		if err != nil {
 			utils.ExitWithError(err.Error())
 		}
