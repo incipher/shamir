@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/hashicorp/vault v1.10.3
 	github.com/manifoldco/promptui v0.9.0
+	github.com/matryer/is v1.4.0
 	github.com/spf13/cobra v1.4.0
 )
 
