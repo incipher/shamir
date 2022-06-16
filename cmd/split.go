@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"io"
+	"strings"
 
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
@@ -11,7 +13,11 @@ import (
 )
 
 // Generates the split command.
-func generateSplitCommand() *cobra.Command {
+func generateSplitCommand(
+	inputSource io.Reader,
+	outputDestination io.Writer,
+	errorDestination io.Writer,
+) *cobra.Command {
 	// Declare command flag values
 	var sharesCount int
 	var thresholdCount int
@@ -24,7 +30,13 @@ func generateSplitCommand() *cobra.Command {
 thereof (of length t) is necessary to reconstruct the 
 original secret.`,
 		Args: cobra.NoArgs,
-		Run:  runSplitCommand(&sharesCount, &thresholdCount),
+		Run: runSplitCommand(
+			inputSource,
+			outputDestination,
+			errorDestination,
+			&sharesCount,
+			&thresholdCount,
+		),
 	}
 
 	// Define command flags
@@ -52,14 +64,19 @@ original secret.`,
 
 // Runs the split command.
 func runSplitCommand(
+	inputSource io.Reader,
+	outputDestination io.Writer,
+	errorDestination io.Writer,
 	sharesCount *int,
 	thresholdCount *int,
 ) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
 		// Define secret prompt
 		prompt := promptui.Prompt{
-			Label: "Secret",
-			Mask:  '*',
+			Stdin:  utils.NopReadCloser(inputSource),
+			Stdout: utils.NopWriteCloser(outputDestination),
+			Label:  "Secret",
+			Mask:   '*',
 			Validate: func(input string) error {
 				if len(input) == 0 {
 					return fmt.Errorf("secret must not be empty")
@@ -72,7 +89,7 @@ func runSplitCommand(
 		// Prompt user for secret
 		secret, err := prompt.Run()
 		if err != nil {
-			utils.ExitWithError(err.Error())
+			utils.ExitWithError(errorDestination, err)
 		}
 
 		// Split secret into shares
@@ -82,12 +99,14 @@ func runSplitCommand(
 			*thresholdCount,
 		)
 		if err != nil {
-			utils.ExitWithError(err.Error())
+			utils.ExitWithError(errorDestination, err)
 		}
 
 		// Print shares
-		for _, share := range shares {
-			fmt.Println(share)
+		sharesConcatenated := strings.Join(shares, "\n")
+		_, err = fmt.Fprintln(outputDestination, sharesConcatenated)
+		if err != nil {
+			utils.ExitWithError(errorDestination, err)
 		}
 	}
 }

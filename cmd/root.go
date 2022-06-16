@@ -1,13 +1,18 @@
 package cmd
 
 import (
+	"io"
 	"strings"
 
 	"github.com/spf13/cobra"
 )
 
-// Defines and runs the CLI.
-func Execute() {
+// Generates the root command.
+func GenerateRootCommand(
+	inputSource io.Reader,
+	outputDestination io.Writer,
+	errorDestination io.Writer,
+) *cobra.Command {
 	examples := []string{"  $ shamir split -n 3 -t 2", "  $ shamir combine -t 2"}
 
 	// Define root command
@@ -19,10 +24,18 @@ func Execute() {
 		Example: strings.Join(examples, "\n"),
 	}
 
-	// Define commands
-	rootCommand.AddCommand(generateSplitCommand())
-	rootCommand.AddCommand(generateCombineCommand())
+	// Set inputs & outputs
+	rootCommand.SetIn(inputSource)
+	rootCommand.SetOut(outputDestination)
+	rootCommand.SetErr(errorDestination)
 
-	// Run CLI
-	cobra.CheckErr(rootCommand.Execute())
+	// Define commands
+	rootCommand.AddCommand(
+		generateSplitCommand(inputSource, outputDestination, errorDestination),
+	)
+	rootCommand.AddCommand(
+		generateCombineCommand(inputSource, outputDestination, errorDestination),
+	)
+
+	return rootCommand
 }
