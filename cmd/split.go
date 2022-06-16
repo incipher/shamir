@@ -74,7 +74,7 @@ func runSplitCommand(
 		// Define secret prompt
 		prompt := promptui.Prompt{
 			Stdin:  utils.NopReadCloser(inputSource),
-			Stdout: utils.NopWriteCloser(outputDestination),
+			Stdout: utils.NopWriteCloser(errorDestination),
 			Label:  "Secret",
 			Mask:   '*',
 			Validate: func(input string) error {

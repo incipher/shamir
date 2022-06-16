@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/matryer/is"
@@ -40,6 +39,7 @@ func TestSplitCommand(t *testing.T) {
 
 	inputReader, _, inputBuffer := createBufferedReaderAndWriter()
 	outputReader, outputWriter, _ := createBufferedReaderAndWriter()
+	_, errorWriter, _ := createBufferedReaderAndWriter()
 
 	_, err := inputBuffer.WriteString(secret)
 	is.NoErr(err)
@@ -48,7 +48,7 @@ func TestSplitCommand(t *testing.T) {
 	_, err = padBuffer(4096-len(secret), inputBuffer)
 	is.NoErr(err)
 
-	rootCommand := GenerateRootCommand(inputReader, outputWriter, outputWriter)
+	rootCommand := GenerateRootCommand(inputReader, outputWriter, errorWriter)
 	rootCommand.SetArgs(
 		[]string{
 			"split",
@@ -65,15 +65,12 @@ func TestSplitCommand(t *testing.T) {
 	err = outputWriter.Flush()
 	is.NoErr(err)
 
-	outputLines := readAllLines(outputReader)
-	shares := outputLines[len(outputLines)-sharesCount:]
-
-	for i := range shares {
-		shares[i] = cleanAnsiEscapeSequence(shares[i])
-	}
+	shares := readAllLines(outputReader)
+	is.Equal(len(shares), sharesCount)
 
 	shareLength := len(shares[0])
 	for _, share := range shares {
+		is.True(len(share) > 0)
 		is.Equal(len(share), shareLength)
 	}
 }
@@ -89,6 +86,7 @@ func TestCombineCommand(t *testing.T) {
 
 	inputReader, _, inputBuffer := createBufferedReaderAndWriter()
 	outputReader, outputWriter, _ := createBufferedReaderAndWriter()
+	_, errorWriter, _ := createBufferedReaderAndWriter()
 
 	for _, share := range shares {
 		_, err := inputBuffer.WriteString(share)
@@ -99,7 +97,7 @@ func TestCombineCommand(t *testing.T) {
 		is.NoErr(err)
 	}
 
-	rootCommand := GenerateRootCommand(inputReader, outputWriter, outputWriter)
+	rootCommand := GenerateRootCommand(inputReader, outputWriter, errorWriter)
 	rootCommand.SetArgs(
 		[]string{
 			"combine",
@@ -115,10 +113,10 @@ func TestCombineCommand(t *testing.T) {
 	is.NoErr(err)
 
 	outputLines := readAllLines(outputReader)
-	lastLine := outputLines[len(outputLines)-1]
-	cleanedLastLine := cleanAnsiEscapeSequence(lastLine)
+	is.Equal(len(outputLines), 1)
 
-	is.Equal(cleanedLastLine, "SayHelloToMyLittleFriend")
+	secret := outputLines[0]
+	is.Equal(secret, "SayHelloToMyLittleFriend")
 }
 
 func createBufferedReaderAndWriter() (*bufio.Reader, *bufio.Writer, *bytes.Buffer) {
@@ -149,8 +147,4 @@ func padBuffer(byteCount int, buffer *bytes.Buffer) (n int, err error) {
 	}
 
 	return buffer.Write(padding)
-}
-
-func cleanAnsiEscapeSequence(text string) string {
-	return strings.ReplaceAll(text, "\x1b[?25h", "")
 }

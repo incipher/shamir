@@ -67,7 +67,7 @@ func runCombineCommand(
 		for i := 0; i < *thresholdCount; i++ {
 			prompt := promptui.Prompt{
 				Stdin:  utils.NopReadCloser(inputSource),
-				Stdout: utils.NopWriteCloser(outputDestination),
+				Stdout: utils.NopWriteCloser(errorDestination),
 				Label:  fmt.Sprintf("Share #%d", i+1),
 				Validate: func(input string) error {
 					if len(input) == 0 {
