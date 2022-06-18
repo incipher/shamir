@@ -1,8 +1,28 @@
 package utils
 
 import (
+	"bufio"
 	"io"
+	"strings"
 )
+
+// Reads lines from the given Reader.
+func ReadLines(reader io.Reader) []string {
+	scanner := bufio.NewScanner(reader)
+	scanner.Split(bufio.ScanLines)
+
+	var lines []string
+	var line string
+
+	for scanner.Scan() {
+		line = strings.TrimSpace(scanner.Text())
+		if line != "" {
+			lines = append(lines, line)
+		}
+	}
+
+	return lines
+}
 
 // Returns an io.ReadCloser with a no-op Close method wrapping the provided reader.
 func NopReadCloser(reader io.Reader) io.ReadCloser {

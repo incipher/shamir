@@ -7,6 +7,11 @@ import (
 	"testing"
 
 	"github.com/matryer/is"
+	"incipher.io/shamir/utils"
+)
+
+const (
+	isTerminal = false
 )
 
 func TestRootCommand(t *testing.T) {
@@ -15,14 +20,14 @@ func TestRootCommand(t *testing.T) {
 	inputReader, _, _ := createBufferedReaderAndWriter()
 	outputReader, outputWriter, _ := createBufferedReaderAndWriter()
 
-	rootCommand := GenerateRootCommand(inputReader, outputWriter, outputWriter)
+	rootCommand := GenerateRootCommand(inputReader, outputWriter, outputWriter, isTerminal)
 	err := rootCommand.Execute()
 	is.NoErr(err)
 
 	err = outputWriter.Flush()
 	is.NoErr(err)
 
-	outputLines := readAllLines(outputReader)
+	outputLines := utils.ReadLines(outputReader)
 
 	is.Equal(
 		outputLines[0],
@@ -44,11 +49,7 @@ func TestSplitCommand(t *testing.T) {
 	_, err := inputBuffer.WriteString(secret)
 	is.NoErr(err)
 
-	// https://github.com/manifoldco/promptui/issues/63
-	_, err = padBuffer(4096-len(secret), inputBuffer)
-	is.NoErr(err)
-
-	rootCommand := GenerateRootCommand(inputReader, outputWriter, errorWriter)
+	rootCommand := GenerateRootCommand(inputReader, outputWriter, errorWriter, isTerminal)
 	rootCommand.SetArgs(
 		[]string{
 			"split",
@@ -65,7 +66,7 @@ func TestSplitCommand(t *testing.T) {
 	err = outputWriter.Flush()
 	is.NoErr(err)
 
-	shares := readAllLines(outputReader)
+	shares := utils.ReadLines(outputReader)
 	is.Equal(len(shares), sharesCount)
 
 	shareLength := len(shares[0])
@@ -91,13 +92,9 @@ func TestCombineCommand(t *testing.T) {
 	for _, share := range shares {
 		_, err := inputBuffer.WriteString(share)
 		is.NoErr(err)
-
-		// https://github.com/manifoldco/promptui/issues/63
-		_, err = padBuffer(4096-len(share), inputBuffer)
-		is.NoErr(err)
 	}
 
-	rootCommand := GenerateRootCommand(inputReader, outputWriter, errorWriter)
+	rootCommand := GenerateRootCommand(inputReader, outputWriter, errorWriter, isTerminal)
 	rootCommand.SetArgs(
 		[]string{
 			"combine",
@@ -112,7 +109,7 @@ func TestCombineCommand(t *testing.T) {
 	err = outputWriter.Flush()
 	is.NoErr(err)
 
-	outputLines := readAllLines(outputReader)
+	outputLines := utils.ReadLines(outputReader)
 	is.Equal(len(outputLines), 1)
 
 	secret := outputLines[0]
@@ -125,26 +122,4 @@ func createBufferedReaderAndWriter() (*bufio.Reader, *bufio.Writer, *bytes.Buffe
 	writer := bufio.NewWriter(buffer)
 
 	return reader, writer, buffer
-}
-
-func readAllLines(reader *bufio.Reader) []string {
-	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
-
-	var lines []string
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	return lines
-}
-
-func padBuffer(byteCount int, buffer *bytes.Buffer) (n int, err error) {
-	padding := make([]byte, byteCount)
-
-	for i := 0; i < byteCount; i++ {
-		padding[i] = 97 // a
-	}
-
-	return buffer.Write(padding)
 }

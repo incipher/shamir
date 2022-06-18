@@ -12,6 +12,7 @@ func GenerateRootCommand(
 	inputSource io.Reader,
 	outputDestination io.Writer,
 	errorDestination io.Writer,
+	isTerminal bool,
 ) *cobra.Command {
 	examples := []string{"  $ shamir split -n 3 -t 2", "  $ shamir combine -t 2"}
 
@@ -31,10 +32,20 @@ func GenerateRootCommand(
 
 	// Define commands
 	rootCommand.AddCommand(
-		generateSplitCommand(inputSource, outputDestination, errorDestination),
+		generateSplitCommand(
+			inputSource,
+			outputDestination,
+			errorDestination,
+			isTerminal,
+		),
 	)
 	rootCommand.AddCommand(
-		generateCombineCommand(inputSource, outputDestination, errorDestination),
+		generateCombineCommand(
+			inputSource,
+			outputDestination,
+			errorDestination,
+			isTerminal,
+		),
 	)
 
 	return rootCommand

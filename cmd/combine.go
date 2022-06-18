@@ -16,6 +16,7 @@ func generateCombineCommand(
 	inputSource io.Reader,
 	outputDestination io.Writer,
 	errorDestination io.Writer,
+	isTerminal bool,
 ) *cobra.Command {
 	// Declare command flag values
 	var thresholdCount int
@@ -30,6 +31,7 @@ func generateCombineCommand(
 			inputSource,
 			outputDestination,
 			errorDestination,
+			isTerminal,
 			&thresholdCount,
 		),
 	}
@@ -53,6 +55,7 @@ func runCombineCommand(
 	inputSource io.Reader,
 	outputDestination io.Writer,
 	errorDestination io.Writer,
+	isTerminal bool,
 	thresholdCount *int,
 ) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
@@ -61,37 +64,29 @@ func runCombineCommand(
 			utils.ExitWithError(errorDestination, fmt.Errorf("threshold must be between 2 and 255"))
 		}
 
-		// Prompt user for shares
-		shares := make([]string, *thresholdCount)
+		var shares []string
+		var err error
 
-		for i := 0; i < *thresholdCount; i++ {
-			prompt := promptui.Prompt{
-				Stdin:  utils.NopReadCloser(inputSource),
-				Stdout: utils.NopWriteCloser(errorDestination),
-				Label:  fmt.Sprintf("Share #%d", i+1),
-				Validate: func(input string) error {
-					if len(input) == 0 {
-						return fmt.Errorf("share must not be empty")
-					}
-
-					if len(input)%2 != 0 {
-						return fmt.Errorf("share must not be of odd length")
-					}
-
-					if _, err := utils.HexToByteArray(input); err != nil {
-						return fmt.Errorf("share must be in hexadecimal encoding")
-					}
-
-					return nil
-				},
-			}
-
-			share, err := prompt.Run()
-			if err != nil {
-				utils.ExitWithError(errorDestination, err)
-			}
-
-			shares[i] = share
+		// Procure shares
+		if isTerminal {
+			shares, err = readSharesFromPrompts(
+				inputSource,
+				outputDestination,
+				errorDestination,
+				isTerminal,
+				thresholdCount,
+			)
+		} else {
+			shares, err = readSharesFromInputSource(
+				inputSource,
+				outputDestination,
+				errorDestination,
+				isTerminal,
+				thresholdCount,
+			)
+		}
+		if err != nil {
+			utils.ExitWithError(errorDestination, err)
 		}
 
 		// Reconstruct secret from shares
@@ -106,4 +101,76 @@ func runCombineCommand(
 			utils.ExitWithError(errorDestination, err)
 		}
 	}
+}
+
+func readSharesFromPrompts(
+	inputSource io.Reader,
+	outputDestination io.Writer,
+	errorDestination io.Writer,
+	isTerminal bool,
+	thresholdCount *int,
+) ([]string, error) {
+	shares := make([]string, *thresholdCount)
+
+	for i := 0; i < *thresholdCount; i++ {
+		prompt := promptui.Prompt{
+			Stdin:  utils.NopReadCloser(inputSource),
+			Stdout: utils.NopWriteCloser(errorDestination),
+			Label:  fmt.Sprintf("Share #%d", i+1),
+			Validate: func(input string) error {
+				if len(input) == 0 {
+					return fmt.Errorf("share must not be empty")
+				}
+
+				if len(input)%2 != 0 {
+					return fmt.Errorf("share must not be of odd length")
+				}
+
+				if _, err := utils.HexToByteArray(input); err != nil {
+					return fmt.Errorf("share must be in hexadecimal encoding")
+				}
+
+				return nil
+			},
+		}
+
+		share, err := prompt.Run()
+		if err != nil {
+			return nil, err
+		}
+
+		shares[i] = share
+	}
+
+	return shares, nil
+}
+
+func readSharesFromInputSource(
+	inputSource io.Reader,
+	outputDestination io.Writer,
+	errorDestination io.Writer,
+	isTerminal bool,
+	thresholdCount *int,
+) ([]string, error) {
+	shares := utils.ReadLines(inputSource)
+
+	if len(shares) != *thresholdCount {
+		return nil, fmt.Errorf("number of shares must be equal to threshold")
+	}
+
+	for i, share := range shares {
+		if len(share) == 0 {
+			return nil, fmt.Errorf("share #%d must not be empty", i+1)
+		}
+
+		if len(share)%2 != 0 {
+			return nil, fmt.Errorf("share #%d must not be of odd length", i+1)
+		}
+
+		if _, err := utils.HexToByteArray(share); err != nil {
+			return nil, fmt.Errorf("share #%d must be in hexadecimal encoding", i+1)
+		}
+	}
+
+	return shares, nil
 }

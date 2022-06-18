@@ -17,6 +17,7 @@ func generateSplitCommand(
 	inputSource io.Reader,
 	outputDestination io.Writer,
 	errorDestination io.Writer,
+	isTerminal bool,
 ) *cobra.Command {
 	// Declare command flag values
 	var sharesCount int
@@ -34,6 +35,7 @@ original secret.`,
 			inputSource,
 			outputDestination,
 			errorDestination,
+			isTerminal,
 			&sharesCount,
 			&thresholdCount,
 		),
@@ -67,30 +69,20 @@ func runSplitCommand(
 	inputSource io.Reader,
 	outputDestination io.Writer,
 	errorDestination io.Writer,
+	isTerminal bool,
 	sharesCount *int,
 	thresholdCount *int,
 ) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
-		// Define secret prompt
-		prompt := promptui.Prompt{
-			Stdin:  utils.NopReadCloser(inputSource),
-			Stdout: utils.NopWriteCloser(errorDestination),
-			Label:  "Secret",
-			Mask:   '*',
-			Validate: func(input string) error {
-				if len(input) == 0 {
-					return fmt.Errorf("secret must not be empty")
-				}
-
-				return nil
-			},
-		}
-
-		// Prompt user for secret
-		secret, err := prompt.Run()
-		if err != nil {
-			utils.ExitWithError(errorDestination, err)
-		}
+		// Procure secret
+		secret, err := readSecretFromPrompt(
+			inputSource,
+			outputDestination,
+			errorDestination,
+			isTerminal,
+			sharesCount,
+			thresholdCount,
+		)
 
 		// Split secret into shares
 		shares, err := shamir.Split(
@@ -109,4 +101,29 @@ func runSplitCommand(
 			utils.ExitWithError(errorDestination, err)
 		}
 	}
+}
+
+func readSecretFromPrompt(
+	inputSource io.Reader,
+	outputDestination io.Writer,
+	errorDestination io.Writer,
+	isTerminal bool,
+	sharesCount *int,
+	thresholdCount *int,
+) (string, error) {
+	prompt := promptui.Prompt{
+		Stdin:  utils.NopReadCloser(inputSource),
+		Stdout: utils.NopWriteCloser(errorDestination),
+		Label:  "Secret",
+		Mask:   '*',
+		Validate: func(input string) error {
+			if len(input) == 0 {
+				return fmt.Errorf("secret must not be empty")
+			}
+
+			return nil
+		},
+	}
+
+	return prompt.Run()
 }
