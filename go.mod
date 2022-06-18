@@ -7,6 +7,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/matryer/is v1.4.0
 	github.com/spf13/cobra v1.4.0
+	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467
 )
 
 require (
