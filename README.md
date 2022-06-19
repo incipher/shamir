@@ -41,7 +41,7 @@ Secret: ************************
 ```
 
 ```
-❯ less shares.txt | shamir combine -t 3
+❯ head -n 2 shares.txt | shamir combine -t 2
 SayHelloToMyLittleFriend
 ```
 
