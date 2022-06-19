@@ -21,7 +21,7 @@ func GenerateRootCommand(
 		Use:     "shamir",
 		Short:   "Split and combine secrets using Shamir's Secret Sharing algorithm.",
 		Long:    "Split and combine secrets using Shamir's Secret Sharing algorithm.",
-		Version: "0.1.2",
+		Version: "0.2.0",
 		Example: strings.Join(examples, "\n"),
 	}
 
