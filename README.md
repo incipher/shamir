@@ -47,9 +47,9 @@ SayHelloToMyLittleFriend
 
 ## Installation
 
-| Platform     | Package manager                               | Command                              |
-| ------------ | --------------------------------------------- | ------------------------------------ |
-| macOS, Linux | [Homebrew](https://docs.brew.sh/Installation) | `❯ brew install incipher/tap/shamir` |
+| Platform     | Package manager             | Command                              |
+| ------------ | --------------------------- | ------------------------------------ |
+| macOS, Linux | [Homebrew](https://brew.sh) | `❯ brew install incipher/tap/shamir` |
 
 ## License
 
