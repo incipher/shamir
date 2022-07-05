@@ -70,8 +70,9 @@ func TestSplitCommand(t *testing.T) {
 	is.Equal(len(shares), sharesCount)
 
 	shareLength := len(shares[0])
+	is.True(shareLength > 0)
+
 	for _, share := range shares {
-		is.True(len(share) > 0)
 		is.Equal(len(share), shareLength)
 	}
 }
