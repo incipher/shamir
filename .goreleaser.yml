@@ -34,8 +34,6 @@ brews:
     description: "Split and combine secrets using Shamir's Secret Sharing algorithm."
     license: CC0
     url_template: 'https://github.com/incipher/shamir/releases/download/{{ .Tag }}/{{ .ArtifactName }}'
-    dependencies:
-      - name: go
     test: |
       system "#{bin}/shamir --version"
     skip_upload: true
