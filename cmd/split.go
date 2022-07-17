@@ -83,6 +83,9 @@ func runSplitCommand(
 			sharesCount,
 			thresholdCount,
 		)
+		if err != nil {
+			utils.ExitWithError(errorDestination, err)
+		}
 
 		// Split secret into shares
 		shares, err := shamir.Split(
