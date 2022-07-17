@@ -20,7 +20,7 @@ Formulated by [Adi Shamir](https://en.wikipedia.org/wiki/Adi_Shamir) (the S in [
 
 ![Diagram](./doc/assets/diagram.png)
 
-Not all shares have to be present for a successful reconstruction, but actually any subset that has a size greater than or equal to the minimum threshold $k$, where $2 \le k \le n$. The algorithm mathematically guarantees that knowledge of $k - 1$ shares reveals absolutely no information about the original secret.
+Not all shares need to be present for a successful reconstruction, but actually any subset thereof with a size greater than or equal to the minimum threshold $k$, where $2 \le k \le n$. The algorithm mathematically guarantees that knowledge of $k - 1$ shares reveals absolutely no information about the original secret.
 
 ## Usage
 
