@@ -55,7 +55,7 @@ func TestSplitCommand(t *testing.T) {
 			"split",
 			"-n",
 			fmt.Sprint(sharesCount),
-			"-t",
+			"-k",
 			fmt.Sprint(thresholdCount),
 		},
 	)
@@ -99,7 +99,7 @@ func TestCombineCommand(t *testing.T) {
 	rootCommand.SetArgs(
 		[]string{
 			"combine",
-			"-t",
+			"-k",
 			fmt.Sprint(thresholdCount),
 		},
 	)

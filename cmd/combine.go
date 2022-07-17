@@ -40,7 +40,7 @@ func generateCombineCommand(
 	combineCommand.Flags().IntVarP(
 		&thresholdCount,
 		"threshold",
-		"t",
+		"k",
 		0,
 		"number of shares necessary to reconstruct the secret",
 	)

@@ -28,7 +28,7 @@ func generateSplitCommand(
 		Use:   "split",
 		Short: "Split a secret into shares",
 		Long: `Splits a secret into shares (of length n), which a subset 
-thereof (of length t) is necessary to reconstruct the 
+thereof (of length k) is necessary to reconstruct the 
 original secret.`,
 		Args: cobra.NoArgs,
 		Run: runSplitCommand(
@@ -53,7 +53,7 @@ original secret.`,
 	splitCommand.Flags().IntVarP(
 		&thresholdCount,
 		"threshold",
-		"t",
+		"k",
 		0,
 		"number of shares necessary to reconstruct the secret",
 	)

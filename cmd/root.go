@@ -14,7 +14,7 @@ func GenerateRootCommand(
 	errorDestination io.Writer,
 	isTerminal bool,
 ) *cobra.Command {
-	examples := []string{"  $ shamir split -n 3 -t 2", "  $ shamir combine -t 2"}
+	examples := []string{"  $ shamir split -n 3 -k 2", "  $ shamir combine -k 2"}
 
 	// Define root command
 	rootCommand := &cobra.Command{

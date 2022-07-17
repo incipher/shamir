@@ -19,7 +19,7 @@ Featuring UNIX-style composability, this command-line tool facilitates splitting
 ### Interactive
 
 ```
-❯ shamir split -n 3 -t 2
+❯ shamir split -n 3 -k 2
 Secret: ************************
 67442ef838a57cbc3063a487d7ca861cf490b9026f5f3a41be
 89ad77b930245a4a60f4698baace1ddbeaec94f0a96400a82a
@@ -27,7 +27,7 @@ Secret: ************************
 ```
 
 ```
-❯ shamir combine -t 2
+❯ shamir combine -k 2
 Share #1: 67442ef838a57cbc3063a487d7ca861cf490b9026f5f3a41be
 Share #2: 9ef082cd4f3456dc4bf161460a7cd5f580ed1fd426fa3ff5d7
 SayHelloToMyLittleFriend
@@ -36,12 +36,12 @@ SayHelloToMyLittleFriend
 ### Non-interactive
 
 ```
-❯ echo "SayHelloToMyLittleFriend" | shamir split -n 3 -t 2 > shares.txt
+❯ echo "SayHelloToMyLittleFriend" | shamir split -n 3 -k 2 > shares.txt
 Secret: ************************
 ```
 
 ```
-❯ head -n 2 shares.txt | shamir combine -t 2
+❯ head -n 2 shares.txt | shamir combine -k 2
 SayHelloToMyLittleFriend
 ```
 
