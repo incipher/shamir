@@ -1,6 +1,10 @@
 install:
   go get
 
+upgrade-dependencies:
+  go get -u
+  go mod tidy
+
 build:
   go build main.go
 
