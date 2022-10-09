@@ -1,3 +1,5 @@
+set dotenv-load
+
 install:
   go get
 
