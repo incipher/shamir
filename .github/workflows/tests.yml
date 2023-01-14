@@ -19,7 +19,7 @@ jobs:
 
       - uses: extractions/setup-just@v1
         with:
-          just-version: 0.8
+          just-version: 1.11.0
 
       - run: just install
 
