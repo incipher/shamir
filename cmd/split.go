@@ -19,11 +19,9 @@ func generateSplitCommand(
 	errorDestination io.Writer,
 	isTerminal bool,
 ) *cobra.Command {
-	// Declare command flag values
 	var sharesCount int
 	var thresholdCount int
 
-	// Define command
 	splitCommand := &cobra.Command{
 		Use:   "split",
 		Short: "Split a secret into shares",
@@ -41,7 +39,6 @@ original secret.`,
 		),
 	}
 
-	// Define command flags
 	splitCommand.Flags().IntVarP(
 		&sharesCount,
 		"shares",
@@ -74,7 +71,6 @@ func runSplitCommand(
 	thresholdCount *int,
 ) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
-		// Procure secret
 		secret, err := readSecretFromPrompt(
 			inputSource,
 			outputDestination,
@@ -87,7 +83,6 @@ func runSplitCommand(
 			utils.ExitWithError(errorDestination, err)
 		}
 
-		// Split secret into shares
 		shares, err := shamir.Split(
 			secret,
 			*sharesCount,
@@ -97,7 +92,6 @@ func runSplitCommand(
 			utils.ExitWithError(errorDestination, err)
 		}
 
-		// Print shares
 		sharesConcatenated := strings.Join(shares, "\n")
 		_, err = fmt.Fprintln(outputDestination, sharesConcatenated)
 		if err != nil {

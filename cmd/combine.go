@@ -18,10 +18,8 @@ func generateCombineCommand(
 	errorDestination io.Writer,
 	isTerminal bool,
 ) *cobra.Command {
-	// Declare command flag values
 	var thresholdCount int
 
-	// Define command
 	combineCommand := &cobra.Command{
 		Use:   "combine",
 		Short: "Reconstruct a secret from shares",
@@ -36,7 +34,6 @@ func generateCombineCommand(
 		),
 	}
 
-	// Define command flags
 	combineCommand.Flags().IntVarP(
 		&thresholdCount,
 		"threshold",
@@ -59,7 +56,6 @@ func runCombineCommand(
 	thresholdCount *int,
 ) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
-		// Validate flag values
 		if *thresholdCount < 2 || *thresholdCount > 255 {
 			utils.ExitWithError(errorDestination, fmt.Errorf("threshold must be between 2 and 255"))
 		}
@@ -67,7 +63,6 @@ func runCombineCommand(
 		var shares []string
 		var err error
 
-		// Procure shares
 		if isTerminal {
 			shares, err = readSharesFromPrompts(
 				inputSource,
@@ -89,13 +84,11 @@ func runCombineCommand(
 			utils.ExitWithError(errorDestination, err)
 		}
 
-		// Reconstruct secret from shares
 		secret, err := shamir.Combine(shares)
 		if err != nil {
 			utils.ExitWithError(errorDestination, err)
 		}
 
-		// Print secret
 		_, err = fmt.Fprintln(outputDestination, secret)
 		if err != nil {
 			utils.ExitWithError(errorDestination, err)

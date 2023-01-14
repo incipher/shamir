@@ -15,7 +15,6 @@ func main() {
 	errorDestination := os.Stderr
 	isTerminal := term.IsTerminal(int(syscall.Stdin))
 
-	// Generate root command
 	rootCommand := cmd.GenerateRootCommand(
 		inputSource,
 		outputDestination,
@@ -23,7 +22,6 @@ func main() {
 		isTerminal,
 	)
 
-	// Run root command
 	err := rootCommand.Execute()
 	if err != nil {
 		utils.ExitWithError(errorDestination, err)

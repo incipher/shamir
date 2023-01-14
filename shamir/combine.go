@@ -9,7 +9,6 @@ import (
 
 // Reconstructs a secret from shares.
 func Combine(sharesHex []string) (string, error) {
-	// Convert shares from hexadecimal to byte arrays
 	sharesBytes := make([][]byte, len(sharesHex))
 
 	for i := range sharesHex {
@@ -21,7 +20,6 @@ func Combine(sharesHex []string) (string, error) {
 		sharesBytes[i] = shareBytes
 	}
 
-	// Validate inputs
 	if len(sharesBytes) < 2 || len(sharesBytes) > 255 {
 		return "", fmt.Errorf("shares must be between 2 and 255")
 	}
@@ -38,15 +36,12 @@ func Combine(sharesHex []string) (string, error) {
 		}
 	}
 
-	// Reconstruct secret from shares
 	secretBytes, err := shamir.Combine(sharesBytes)
 	if err != nil {
 		return "", err
 	}
 
-	// Convert secret from byte array to string
 	secret := utils.ByteArrayToString(secretBytes)
 
-	// Return secret
 	return secret, nil
 }

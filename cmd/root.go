@@ -16,7 +16,6 @@ func GenerateRootCommand(
 ) *cobra.Command {
 	examples := []string{"  $ shamir split -n 5 -k 3", "  $ shamir combine -k 3"}
 
-	// Define root command
 	rootCommand := &cobra.Command{
 		Use:     "shamir",
 		Short:   "Split and combine secrets using Shamir's Secret Sharing algorithm.",
@@ -25,12 +24,10 @@ func GenerateRootCommand(
 		Example: strings.Join(examples, "\n"),
 	}
 
-	// Set inputs & outputs
 	rootCommand.SetIn(inputSource)
 	rootCommand.SetOut(outputDestination)
 	rootCommand.SetErr(errorDestination)
 
-	// Define commands
 	rootCommand.AddCommand(
 		generateSplitCommand(
 			inputSource,

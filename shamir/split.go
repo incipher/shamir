@@ -15,7 +15,6 @@ func Split(
 	sharesCount int,
 	thresholdCount int,
 ) ([]string, error) {
-	// Validate inputs
 	if len(secret) == 0 {
 		return nil, fmt.Errorf("secret must not be empty")
 	}
@@ -32,7 +31,6 @@ func Split(
 		return nil, fmt.Errorf("threshold must be between 2 and 255")
 	}
 
-	// Split secret into shares
 	sharesBytes, err := shamir.Split(
 		utils.StringToByteArray(secret),
 		sharesCount,
@@ -42,13 +40,11 @@ func Split(
 		return nil, err
 	}
 
-	// Encode shares in hexadecimal
 	sharesHex := make([]string, len(sharesBytes))
 
 	for i := range sharesBytes {
 		sharesHex[i] = utils.ByteArrayToHex(sharesBytes[i])
 	}
 
-	// Return shares
 	return sharesHex, nil
 }
