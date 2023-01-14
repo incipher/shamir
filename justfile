@@ -1,22 +1,22 @@
 set dotenv-load
 
-install:
+install-dependencies:
   go get
-
-upgrade-go-version version:
-  go mod edit -go {{version}}
-  go mod tidy
 
 upgrade-dependencies:
   go get -u
   go mod tidy
 
-build:
-  go build main.go
+upgrade-go-version version:
+  go mod edit -go {{version}}
+  go mod tidy
 
 test:
   go clean -testcache
   CGO_ENABLED="0" go test -v ./...
+
+build:
+  go build main.go
 
 publish version:
   @echo 'Publishing {{version}} ...'
