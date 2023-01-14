@@ -10,6 +10,14 @@
   </a>
 </div>
 
+- [Description](#description)
+- [Background](#background)
+- [Usage](#usage)
+  - [Interactive](#interactive)
+  - [Non-interactive](#non-interactive)
+- [Installation](#installation)
+- [License](#license)
+
 ## Description
 
 Featuring UNIX-style composability, this command-line tool facilitates splitting and combining secrets using [HashiCorp Vault's implementation](https://github.com/hashicorp/vault/blob/main/shamir/shamir.go) of [Shamir's Secret Sharing](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing) algorithm.
