@@ -1,6 +1,6 @@
 module incipher.io/shamir
 
-go 1.18
+go 1.19
 
 require (
 	github.com/hashicorp/vault v1.11.4
