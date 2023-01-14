@@ -12,10 +12,10 @@
 
 - [Description](#description)
 - [Background](#background)
+- [Installation](#installation)
 - [Usage](#usage)
   - [Interactive](#interactive)
   - [Non-interactive](#non-interactive)
-- [Installation](#installation)
 - [License](#license)
 
 ## Description
@@ -29,6 +29,12 @@ Formulated by [Adi Shamir](https://en.wikipedia.org/wiki/Adi_Shamir) (the S in [
 ![Diagram](./doc/assets/diagram.png)
 
 Not all shares need to be present for a successful reconstruction, but actually any subset thereof with a size greater than or equal to the minimum threshold $k$, where $2 \le k \le n$. The algorithm mathematically guarantees that knowledge of $k - 1$ shares reveals absolutely no information about the original secret.
+
+## Installation
+
+| Platform     | Package manager             | Command                              |
+| ------------ | --------------------------- | ------------------------------------ |
+| Linux, macOS | [Homebrew](https://brew.sh) | `$ brew install incipher/tap/shamir` |
 
 ## Usage
 
@@ -63,12 +69,6 @@ Secret: ************************
 $ head -n 3 shares.txt | shamir combine -k 3
 SayHelloToMyLittleFriend
 ```
-
-## Installation
-
-| Platform     | Package manager             | Command                              |
-| ------------ | --------------------------- | ------------------------------------ |
-| Linux, macOS | [Homebrew](https://brew.sh) | `$ brew install incipher/tap/shamir` |
 
 ## License
 
