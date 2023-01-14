@@ -3,6 +3,10 @@ set dotenv-load
 install:
   go get
 
+upgrade-go-version version:
+  go mod edit -go {{version}}
+  go mod tidy
+
 upgrade-dependencies:
   go get -u
   go mod tidy
