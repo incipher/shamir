@@ -10,6 +10,9 @@
   </a>
 </div>
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
 - [Description](#description)
 - [Background](#background)
 - [Installation](#installation)
