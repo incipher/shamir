@@ -43,23 +43,7 @@ Not all shares need to be present for a successful reconstruction, but actually 
 
 ### Interactive
 
-```
-$ shamir split -n 5 -k 3
-Secret: ************************
-b55fcb1a94ea9036976b6715557df1f7a9594aa28c0c8ddc76
-c7b340426663c59cca8f279d556846374b6180a893237e3188
-be5beb08533a4a3611c46e9d971127ff59b77873995df6610b
-932711479caee6016bdac5fafe00ef52911a60b48762356ae6
-01bd0f50b71c9fa3b3e6098ebaad87d52372cfe5b91b1762d8
-```
-
-```
-$ shamir combine -k 3
-Share #1: b55fcb1a94ea9036976b6715557df1f7a9594aa28c0c8ddc76
-Share #2: be5beb08533a4a3611c46e9d971127ff59b77873995df6610b
-Share #3: 01bd0f50b71c9fa3b3e6098ebaad87d52372cfe5b91b1762d8
-SayHelloToMyLittleFriend
-```
+![A GIF showing how to use shamir interactively](./doc/assets/interactive-usage.gif)
 
 ### Non-interactive
 
