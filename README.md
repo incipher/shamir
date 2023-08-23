@@ -31,9 +31,10 @@ Featuring UNIX-style composability, this command-line tool facilitates splitting
 
 ## Installation
 
-| Platform     | Package manager             | Command                              |
-| ------------ | --------------------------- | ------------------------------------ |
-| Linux, macOS | [Homebrew](https://brew.sh) | `$ brew install incipher/tap/shamir` |
+| Platform              | Package manager                                         | Command                              |
+| --------------------- | ------------------------------------------------------- | ------------------------------------ |
+| Linux, macOS          | [Homebrew](https://brew.sh)                             | `$ brew install incipher/tap/shamir` |
+| Linux, macOS, Windows | [Binaries](https://github.com/incipher/shamir/releases) |                                      |
 
 ## Usage
 
