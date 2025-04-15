@@ -1,3 +1,6 @@
+> [!NOTE]
+> Moved to [Codeberg](https://codeberg.org/abdelrahman/shamir).
+
 <div align="center">
   <img src="https://user-images.githubusercontent.com/11808903/112536517-e07bcb00-8dad-11eb-9931-10ad4fe5c1d9.png" width="200"/>
 
